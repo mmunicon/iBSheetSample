@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" th:href="@{/css/basic.css}">
+<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/listmap.js}"></script>
+<title>Insert title here</title>
+</head>
+<body>
+<form id="form">
+<select th:onchange="fnChangeTeam()" id="searchRegion" name="searchRegion">
+	<option value=""> 선택 </option>
+	<option th:each="val : ${listTeam}"
+			th:value="${val.teamId}"
+			th:utext="${val.regionName}" th:selected="${mapDto.searchRegion eq val.teamId}"></option>
+</select>
+<script th:inline="javascript">
+/* thymeleaf 스크립트 변수 테스트용 jstl의 "${item} 과 동일함"*/
+/*<![CDATA[*/ 
+	let name = /*[[ ${mapDto.searchRegion} ]]*/; 
+/*]]*/
+</script>
+<table>
+      <tr>
+        <th>팀</th>        
+        <th>성명</th>
+        <th>포지션</th>
+        <th>백넘버</th>
+      </tr>
+      <tr th:each="list : ${list}">
+        <td th:text="${list.regionName}"></td>
+        <td th:text="${list.playerName}"></td>
+        <td th:text="${list.position}"></td>        
+        <td th:text="${list.backNo}"></td>
+      </tr>
+</table>
+</form>
+</body>
+</html>

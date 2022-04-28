@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="map" >
+	
+	<select id="selectPlayerCount" parameterType="com.myapp.dto.MapDto" resultType="int">
+		SELECT 
+			 COUNT(1) COUNT
+		 FROM PLAYER A 
+		 WHERE 1=1
+	</select>
+	
+	<select id="selectGridList" parameterType="com.myapp.dto.MapDto" resultType="com.myapp.dto.MapDto">
+       SELECT 
+		A.* 
+		FROM		
+		(
+			SELECT
+				ROW_NUMBER() OVER(ORDER BY A.TEAM_ID, A.BACK_NO ASC ) R_NUM,
+				PLAYER_ID,        
+				PLAYER_NAME,      
+				TEAM_ID, 
+	            (SELECT S.TEAM_NAME FROM TEAM S WHERE S.TEAM_ID=A.TEAM_ID) TEAM_NAME,     
+	            (SELECT S.REGION_NAME FROM TEAM S WHERE S.TEAM_ID=A.TEAM_ID) REGION_NAME,     
+				E_PLAYER_NAME,     
+				NICKNAME,        
+				JOIN_YYYY,        
+				POSITION,        
+				BACK_NO,          
+				NATION,          
+				BIRTH_DATE,      
+				SOLAR,           
+				HEIGHT,          
+				WEIGHT
+			 FROM PLAYER A 
+			 WHERE 1=1
+		 ) A
+		 WHERE 
+		 R_NUM BETWEEN (#{page}-1)*#{rows}+1 AND #{page}*#{rows} /*paging 조건절*/	
+    </select>
+    
+	
+    <select id="listMap" parameterType="com.myapp.dto.MapDto" resultType="com.myapp.dto.MapDto">
+       SELECT
+			ROW_NUMBER() OVER(ORDER BY A.TEAM_ID, A.BACK_NO ASC ) R_NUM,
+			PLAYER_ID playerId,        
+			PLAYER_NAME playerName,      
+			TEAM_ID teamId, 
+            (SELECT S.TEAM_NAME FROM TEAM S WHERE S.TEAM_ID=A.TEAM_ID) teamName,     
+            (SELECT S.REGION_NAME FROM TEAM S WHERE S.TEAM_ID=A.TEAM_ID) regionName,     
+			E_PLAYER_NAME ePlayerName,     
+			NICKNAME nickname,        
+			JOIN_YYYY joinYyyy,        
+			POSITION position,        
+			BACK_NO backNo,          
+			NATION nation,          
+			BIRTH_DATE birthDate,      
+			SOLAR solar,           
+			HEIGHT height,          
+			WEIGHT weight
+		 FROM PLAYER A 
+		 WHERE 1=1
+		 
+    </select>
+    
+    <select id="listTeam" resultType="com.myapp.dto.MapDto">
+        SELECT 
+			 TEAM_ID teamId
+			 , REGION_NAME regionName
+		 FROM TEAM ORDER BY TEAM_ID
+    </select>
+</mapper>
